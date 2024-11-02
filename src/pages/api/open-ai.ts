@@ -16,7 +16,7 @@ export default async function handler(
 
   // Call the chat endpoint with the prompt and some options
   const response = await openai.chat.completions.create({
-    model: "gpt-4-0125-preview",
+    model: "gpt-4",
     messages: [
       {
         role: "system",
@@ -28,6 +28,10 @@ export default async function handler(
       },
     ],
     max_tokens: 120,
+    temperature: 0.8,
+    top_p: 0.9,
+    frequency_penalty: 0.3,
+    presence_penalty: 0.3,
   });
 
   // Get the response data
