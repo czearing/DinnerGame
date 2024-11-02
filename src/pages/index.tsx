@@ -28,7 +28,7 @@ const containerStyle: React.CSSProperties = {
   flexDirection: "column",
   gap: "20px",
   maxWidth: "500px",
-  margin: "10px auto",
+  margin: "0px auto",
   padding: "30px",
   borderRadius: "12px",
   boxShadow: "0 8px 16px rgba(0, 0, 0, 0.1)",
