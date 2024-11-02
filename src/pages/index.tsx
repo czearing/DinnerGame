@@ -6,6 +6,7 @@ import {
   addQuestion,
   getStoredQuestions,
 } from "../utils";
+import { Spinner } from "@fluentui/react-components";
 
 // Define a modern light color palette
 const colors = {
@@ -100,9 +101,9 @@ const listItemStyle: React.CSSProperties = {
 };
 
 // Custom Spinner Component
-const Spinner: React.FC = () => (
+const SpinnerWrapper: React.FC = () => (
   <div style={spinnerContainerStyle}>
-    <div style={spinnerStyle}></div>
+    <Spinner />
   </div>
 );
 
@@ -113,26 +114,6 @@ const spinnerContainerStyle: React.CSSProperties = {
   alignItems: "center",
   minHeight: "80px",
 };
-
-const spinnerStyle: React.CSSProperties = {
-  width: "40px",
-  height: "40px",
-  border: "5px solid #e0e0e0",
-  borderTop: `5px solid ${colors.primary}`,
-  borderRadius: "50%",
-  animation: "spin 1s linear infinite",
-};
-
-// Keyframes for spinner animation
-const spinnerKeyframes = `
-@keyframes spin {
-  to { transform: rotate(360deg); }
-}
-`;
-
-// Inject keyframes into the document
-const styleSheet = document.styleSheets[0];
-styleSheet.insertRule(spinnerKeyframes, styleSheet.cssRules.length);
 
 export default function Home() {
   // State for previously asked questions, initialized from localStorage
@@ -193,7 +174,7 @@ export default function Home() {
             {data?.content || "No question available."}
           </div>
         ) : (
-          <Spinner />
+          <SpinnerWrapper />
         )}
 
         {/* Button to fetch a new question */}
