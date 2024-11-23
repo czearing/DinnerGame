@@ -4,6 +4,7 @@ import {
   generateInstructions,
   addQuestion,
   getStoredQuestions,
+  setStoredQuestions,
 } from "../utils";
 import { Spinner } from "@fluentui/react-components";
 
@@ -130,15 +131,17 @@ export default function Home() {
   );
 
   // Fetch data using the useOpenAi hook with memoized instructions
-  const { data, refetch } = useOpenAi(botDescription, instructions);
-  const [isLoading, setIsLoading] = useState(false);
+  const { data, isLoading, refetch } = useOpenAi(botDescription, instructions);
 
   // Persist the previouslyAskedQuestions to localStorage whenever it changes
   useEffect(() => {
     if (data?.content) {
-      setPreviouslyAskedQuestions((prevQuestions) =>
-        addQuestion(prevQuestions, data.content)
-      );
+      setPreviouslyAskedQuestions((prevQuestions) => {
+        const newQuestions = addQuestion(prevQuestions, data.content);
+        setStoredQuestions(newQuestions);
+
+        return newQuestions;
+      });
     }
   }, [data?.content]);
 
@@ -147,7 +150,6 @@ export default function Home() {
    */
   const handleNewQuestion = async () => {
     try {
-      setIsLoading(true);
       const response = await refetch(); // Assuming refetch returns a promise
       const newQuestion = response?.data?.content;
 
@@ -159,7 +161,6 @@ export default function Home() {
     } catch (error) {
       console.error("Error fetching new question:", error);
     }
-    setIsLoading(false);
   };
 
   const filteredQuestions = previouslyAskedQuestions.slice(1);

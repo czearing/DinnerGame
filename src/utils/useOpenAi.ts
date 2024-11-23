@@ -1,11 +1,11 @@
 // src/utils/useOpenAi.ts
 import { useQuery } from "@tanstack/react-query";
-import { fetchOpenAi } from "../server";
+import { fetchQuestion } from "../server";
 
 export const useOpenAi = (input: string, instructions: string) => {
   const { data, isLoading, refetch } = useQuery({
-    queryKey: ["open-ai", input, instructions],
-    queryFn: () => fetchOpenAi(input, instructions),
+    queryKey: ["generate-question", input, instructions],
+    queryFn: () => fetchQuestion(input, instructions),
     enabled: !!input,
     refetchOnWindowFocus: false,
     retry: false,

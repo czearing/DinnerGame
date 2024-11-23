@@ -1,1 +1,1 @@
-export * from "./fetchOpenAi";
+export * from "./fetchQuestion";
