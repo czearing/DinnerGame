@@ -24,14 +24,14 @@ export default async function handler(
       },
       {
         role: "user",
-        content: instructions,
+        content: instructions || "",
       },
     ],
-    max_tokens: 120,
-    temperature: 0.8,
+    max_tokens: 250,
+    temperature: 0.9, // Increased for more creativity
     top_p: 0.9,
-    frequency_penalty: 0.3,
-    presence_penalty: 0.3,
+    frequency_penalty: 0.5, // Discourages repetition
+    presence_penalty: 0.6, // Encourages new topics
   });
 
   // Get the response data

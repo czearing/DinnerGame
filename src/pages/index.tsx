@@ -1,7 +1,6 @@
 import React, { useState, useEffect, useMemo } from "react";
 import {
   useOpenAi,
-  setStoredQuestions,
   generateInstructions,
   addQuestion,
   getStoredQuestions,
@@ -131,18 +130,24 @@ export default function Home() {
   );
 
   // Fetch data using the useOpenAi hook with memoized instructions
-  const { data, isLoading, refetch } = useOpenAi(botDescription, instructions);
+  const { data, refetch } = useOpenAi(botDescription, instructions);
+  const [isLoading, setIsLoading] = useState(false);
 
   // Persist the previouslyAskedQuestions to localStorage whenever it changes
   useEffect(() => {
-    setStoredQuestions(previouslyAskedQuestions);
-  }, [previouslyAskedQuestions]);
+    if (data?.content) {
+      setPreviouslyAskedQuestions((prevQuestions) =>
+        addQuestion(prevQuestions, data.content)
+      );
+    }
+  }, [data?.content]);
 
   /**
    * Handles fetching a new question and updating the state accordingly.
    */
   const handleNewQuestion = async () => {
     try {
+      setIsLoading(true);
       const response = await refetch(); // Assuming refetch returns a promise
       const newQuestion = response?.data?.content;
 
@@ -154,7 +159,10 @@ export default function Home() {
     } catch (error) {
       console.error("Error fetching new question:", error);
     }
+    setIsLoading(false);
   };
+
+  const filteredQuestions = previouslyAskedQuestions.slice(1);
 
   return (
     <div
@@ -211,13 +219,13 @@ export default function Home() {
         </button>
 
         {/* Display the list of previously asked questions */}
-        {previouslyAskedQuestions.length > 0 && (
+        {filteredQuestions.length > 0 && (
           <div>
             <h2 style={{ color: colors.textPrimary, marginBottom: "15px" }}>
               Previously Asked Questions:
             </h2>
             <ul style={listStyle}>
-              {previouslyAskedQuestions.map((question, index) => (
+              {filteredQuestions.map((question, index) => (
                 <li
                   key={index}
                   style={listItemStyle}

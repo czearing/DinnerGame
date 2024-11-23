@@ -14,7 +14,7 @@ export const addQuestion = (
     return currentQuestions;
   }
 
-  const updatedQuestions = [...currentQuestions, newQuestion];
+  const updatedQuestions = [newQuestion, ...currentQuestions];
 
   if (updatedQuestions.length > MAX_QUESTIONS) {
     return updatedQuestions.slice(updatedQuestions.length - MAX_QUESTIONS);
