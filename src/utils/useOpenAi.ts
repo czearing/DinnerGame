@@ -4,8 +4,7 @@ import { fetchQuestion } from "../server";
 export const useOpenAi = (
   input: string,
   instructions: string,
-  enabled: boolean = true,
-  refetchOnParamChange: boolean = false
+  enabled: boolean = true
 ) => {
   const { data, isLoading, refetch } = useQuery({
     queryKey: ["generate-question"],

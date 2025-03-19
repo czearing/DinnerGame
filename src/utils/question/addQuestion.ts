@@ -9,7 +9,7 @@ const summarizeQuestionBotDescription = `You are an assistant specialized in sum
  * @param  newQuestion - The new question to add.
  * @returns  Updated list of questions.
  */
-export const addQuestion = async (
+export const addQuestion = (
   currentQuestions: string[],
   newQuestion: string
 ) => {
@@ -17,11 +17,10 @@ export const addQuestion = async (
     return currentQuestions;
   }
 
-  const summarizedQuestion = await summarizeQuestion(
-    summarizeQuestionBotDescription,
-    newQuestion
-  );
-  console.log(summarizedQuestion?.content);
+  // const summarizedQuestion = await summarizeQuestion(
+  //   summarizeQuestionBotDescription,
+  //   newQuestion
+  // );
 
   const updatedQuestions = [newQuestion, ...currentQuestions];
 

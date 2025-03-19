@@ -1,7 +1,4 @@
 export const fetchQuestion = async (prompt: string, instructions: string) => {
-  console.log(prompt);
-  console.log(instructions);
-
   // Properly encode the parameters for the URL
   const encodedPrompt = encodeURIComponent(prompt);
   const encodedInstructions = encodeURIComponent(instructions);

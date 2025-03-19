@@ -9,12 +9,9 @@ export const generateInstructions = (questions: string[]) => {
     return "Please generate a new question.";
   }
 
-  // Get the most recent questions (last HISTORY_LIMIT items)
-  // Simple slice from the end of the array
-  const recentQs = questions.slice(-HISTORY_LIMIT);
+  const recentQs = [...questions].slice(-HISTORY_LIMIT);
   const formattedQs = recentQs.map((q) => `• ${q}`).join("\n");
 
-  console.log(questions);
   return `Please generate an interesting, thoughtful question that would spark meaningful conversation at a dinner table. The question should:
 
 1. Be direct and concise (no more than 20 words)
