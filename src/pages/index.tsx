@@ -115,55 +115,38 @@ const spinnerContainerStyle: React.CSSProperties = {
   minHeight: "80px",
 };
 
+// Base bot description
+const botDescription =
+  "You are a bot that generates interesting questions to learn more about the person you are talking to. Do not ask anything about historical figures and only ask the question.";
+
 export default function Home() {
-  // State for previously asked questions, initialized from localStorage
   const [previouslyAskedQuestions, setPreviouslyAskedQuestions] =
     useState<string[]>(getStoredQuestions());
+  const [shouldFetch, setShouldFetch] = useState(false);
 
-  // Base bot description
-  const botDescription =
-    "You are a bot that generates interesting questions to learn more about the person you are talking to. Do not ask anything about historical figures and only ask the question.";
-
-  // Memoized instructions for the OpenAI API
   const instructions = useMemo(
     () => generateInstructions(previouslyAskedQuestions),
     [previouslyAskedQuestions]
   );
 
-  // Fetch data using the useOpenAi hook with memoized instructions
-  const { data, isLoading, refetch } = useOpenAi(botDescription, instructions);
+  const { data, isLoading, refetch } = useOpenAi(
+    botDescription,
+    instructions,
+    true,
+    false
+  );
 
-  // Persist the previouslyAskedQuestions to localStorage whenever it changes
-  useEffect(() => {
-    if (data?.content) {
-      setPreviouslyAskedQuestions((prevQuestions) => {
-        const newQuestions = addQuestion(prevQuestions, data.content);
-        setStoredQuestions(newQuestions);
-
-        return newQuestions;
-      });
-    }
-  }, [data?.content]);
-
-  /**
-   * Handles fetching a new question and updating the state accordingly.
-   */
-  const handleNewQuestion = async () => {
-    try {
-      const response = await refetch(); // Assuming refetch returns a promise
-      const newQuestion = response?.data?.content;
-
-      if (newQuestion) {
-        setPreviouslyAskedQuestions((prevQuestions) =>
-          addQuestion(prevQuestions, newQuestion)
-        );
-      }
-    } catch (error) {
-      console.error("Error fetching new question:", error);
-    }
+  const handleNewQuestion = () => {
+    refetch();
   };
 
   const filteredQuestions = previouslyAskedQuestions.slice(1);
+
+  useEffect(() => {
+    if (previouslyAskedQuestions.length === 0) {
+      setShouldFetch(true);
+    }
+  }, [previouslyAskedQuestions.length]);
 
   return (
     <div

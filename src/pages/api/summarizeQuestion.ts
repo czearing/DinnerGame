@@ -27,11 +27,11 @@ export default async function handler(
         content: instructions || "",
       },
     ],
-    max_tokens: 100,
-    temperature: 1.0, // Increased for more creativity
-    top_p: 0.95,
-    frequency_penalty: 0.8, // Discourages repetition
-    presence_penalty: 0.8, // Encourages new topics
+    max_tokens: 250,
+    temperature: 0.9, // Increased for more creativity
+    top_p: 0.9,
+    frequency_penalty: 0.5, // Discourages repetition
+    presence_penalty: 0.6, // Encourages new topics
   });
 
   // Get the response data

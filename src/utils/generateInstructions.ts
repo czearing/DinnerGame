@@ -6,13 +6,23 @@ import { HISTORY_LIMIT } from "./question";
  */
 export const generateInstructions = (questions: string[]) => {
   if (questions.length === 0) {
-    return "Give me a question.";
+    return "Please generate a new question.";
   }
 
+  // Get the most recent questions (last HISTORY_LIMIT items)
+  // Simple slice from the end of the array
   const recentQs = questions.slice(-HISTORY_LIMIT);
-  const formattedQs = recentQs
-    .map((q, index) => `${index + 1}. ${q}`)
-    .join("\n");
+  const formattedQs = recentQs.map((q) => `• ${q}`).join("\n");
 
-  return `Give me a new question. Please ensure it is not any of the following previously asked questions:\n${formattedQs}`;
+  console.log(questions);
+  return `Please generate an interesting, thoughtful question that would spark meaningful conversation at a dinner table. The question should:
+
+1. Be direct and concise (no more than 20 words)
+2. Avoid hypothetical transformations (like "if X were Y") unless truly insightful
+3. Focus on real life experiences, values, or perspectives
+4. Be distinct from these previous questions:
+
+${formattedQs}
+
+Your question should be different in both structure and topic from the pattern of recent questions. Aim for variety in how you phrase questions.`;
 };
